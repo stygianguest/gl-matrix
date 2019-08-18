@@ -33,7 +33,8 @@
     "build-umd": "rollup -c",
     "build-esm": "cross-env BABEL_ENV=esm babel src -d dist/esm",
     "build-cjs": "babel src -d dist/cjs",
-    "build": "del dist && npm run update-license-version && npm run build-umd && npm run build-esm && npm run build-cjs && node ./utils/build.js"
+    "build": "del dist && npm run update-license-version && npm run build-umd && npm run build-esm && npm run build-cjs && node ./utils/build.js",
+    "prepare": "npm run build"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",
