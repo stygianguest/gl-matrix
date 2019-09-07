@@ -100,6 +100,34 @@ export function getAngle(a, b) {
 }
 
 /**
+ * Gets the rotation (called twist) component of a unit quaternion around a
+ * given axis.
+ *
+ * @param  {quat} out   The receiving quaternion
+ * @param  {vec3} axis  The unit vector defining the rotation axis
+ * @param  {quat} a     Unit quaternion to be decomposed
+ * @return {quat}       The unit quaternion representing the twist
+ */
+export function getTwist(out, axis, a) {
+  let w = vec3.fromValues(a[0], a[1], a[2]);
+  let cosine = vec3.dot(axis, w);
+
+  if (Math.abs(cosine) < glMatrix.EPSILON) {
+    // close to zero: no twist around given axis, return identity
+    return identity(out);
+  }
+
+  w = vec3.scale(w, axis, cosine);
+
+  out[0] = w[0];
+  out[1] = w[1];
+  out[2] = w[2];
+  out[3] = a[3];
+
+  return normalize(out, out)
+}
+
+/**
  * Multiplies two quat's
  *
  * @param {quat} out the receiving quaternion

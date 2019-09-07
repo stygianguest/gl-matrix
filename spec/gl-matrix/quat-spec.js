@@ -515,6 +515,33 @@ describe("quat", function() {
         });
     });
 
+    describe("getTwist", function() {
+        describe("only twist, no swing", function() {
+          it("around X axis", function() {
+            // expect same result because quatA only contains a
+            // rotation around the X axis
+            quatA = quat.rotateX(quatA, [1,0,0,0], 1.2 /* random angle */);
+            quatB = quat.getTwist(quatB, [1,0,0], quatA);
+            expect(quatB).toBeEqualish(quatA);
+          });
+          it("around X axis", function() {
+            // quatA == quatB because we use axis to construct quatA as
+            // well as to decompose it
+            let axis = vec3.normalize(vec, [2, 3, 4]);
+            quatA = quat.setAxisAngle(quatA, axis, 1.2 /* random angle */);
+            quatB = quat.getTwist(quatB, axis, quatA);
+            expect(quatB).toBeEqualish(quatA);
+          });
+        });
+
+        describe("no twist", function() {
+          it("for perpendicular axis", function() {
+            quatA = quat.getTwist(quatA, [1,0,0], [0,1,0,0]);
+            expect(quatA).toBeEqualish(id);
+          });
+        });
+    });
+
     describe("add", function() {
         describe("with a separate output quaternion", function() {
             beforeEach(function() { result = quat.add(out, quatA, quatB); });
